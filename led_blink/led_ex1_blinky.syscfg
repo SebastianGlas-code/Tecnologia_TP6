@@ -1,0 +1,125 @@
+/**
+ * These arguments were used when this file was generated. They will be automatically applied on subsequent loads
+ * via the GUI or CLI. Run CLI with '--help' for additional information on how to override these arguments.
+ * @cliArgs --board "/boards/LAUNCHXL_F29H85X" --context "CPU1" --product "MCU_SDK_F29H85x@1.02.01.00"
+ * @v2CliArgs --board "/boards/LAUNCHXL_F29H85X" --context "CPU1" --product "MCU_SDK_F29H85x@1.02.01.00"
+ * @versions {"tool":"1.25.0+4268"}
+ */
+
+/**
+ * Import the modules used in this configuration.
+ */
+const led       = scripting.addModule("/driverlib/board_components/led", {}, false);
+const led1      = led.addInstance();
+const led2      = led.addInstance();
+const cputimer  = scripting.addModule("/driverlib/cputimer.js", {}, false);
+const cputimer1 = cputimer.addInstance();
+const epwm      = scripting.addModule("/driverlib/epwm.js", {}, false);
+const epwm1     = epwm.addInstance();
+const gpio      = scripting.addModule("/driverlib/gpio.js", {}, false);
+const gpio3     = gpio.addInstance();
+const gpio4     = gpio.addInstance();
+const gpio5     = gpio.addInstance();
+const gpio6     = gpio.addInstance();
+const jtag      = scripting.addModule("/driverlib/jtag.js");
+const uart      = scripting.addModule("/driverlib/uart.js", {}, false);
+const uart1     = uart.addInstance();
+
+/**
+ * Write custom configuration values to the imported modules.
+ */
+led1.$name     = "myBoardLED1";
+led1.$hardware = system.deviceData.board.components.LED4;
+
+led2.$hardware            = system.deviceData.board.components.LED5;
+led2.$name                = "myBoardLED2";
+led2.gpio.gpioPin.$assign = "GPIO62";
+
+const divider4       = system.clockTree["EPWMCLKDIV"];
+divider4.divideValue = 1;
+
+const divider15       = system.clockTree["PLL_REFDIV"];
+divider15.divideValue = 1;
+
+const multiplier1         = system.clockTree["PLL_IMULT"];
+multiplier1.multiplyValue = 40;
+
+const mux7       = system.clockTree["OSCCLKSRCSEL"];
+mux7.inputSelect = "INTOSC2";
+
+cputimer1.timerPeriod        = 200000;
+cputimer1.startTimer         = true;
+cputimer1.enableInterrupt    = true;
+cputimer1.registerInterrupts = true;
+cputimer1.$name              = "Timer_1ms";
+cputimer1.emulationMode      = "CPUTIMER_EMULATIONMODE_RUNFREE";
+cputimer1.periphClock.$name  = "driverlib_perClock0";
+
+epwm1.$name                                                    = "ePWM_MOTOR";
+epwm1.$hardware                                                = system.deviceData.board.components.BP_SITE_1.subComponents.PWM_LOC1;
+epwm1.epwmTimebase_hsClockDiv                                  = "EPWM_HSCLOCK_DIVIDER_1";
+epwm1.epwmCounterCompare_enableShadowLoadModeCMPA              = false;
+epwm1.epwmCounterCompare_enableShadowLoadModeCMPB              = false;
+epwm1.epwmTimebase_period                                      = 9999;
+epwm1.epwmCounterCompare_cmpA                                  = 5000;
+epwm1.epwmActionQualifier_EPWM_AQ_OUTPUT_A_ON_TIMEBASE_ZERO    = "EPWM_AQ_OUTPUT_HIGH";
+epwm1.epwmActionQualifier_EPWM_AQ_OUTPUT_A_ON_TIMEBASE_UP_CMPA = "EPWM_AQ_OUTPUT_LOW";
+epwm1.epwmDeadband_polarityFED                                 = "EPWM_DB_POLARITY_ACTIVE_LOW";
+epwm1.epwmDeadband_enableRED                                   = true;
+epwm1.epwmDeadband_enableFED                                   = true;
+epwm1.epwmDeadband_delayRED                                    = 10;
+epwm1.epwmDeadband_delayFED                                    = 10;
+epwm1.epwmEventTrigger_enableInterrupt                         = true;
+epwm1.epwmEventTrigger_registerInterrupts                      = true;
+epwm1.epwmEventTrigger_interruptSource                         = "EPWM_INT_TBCTR_PERIOD";
+epwm1.epwmEventTrigger_interruptEventCount                     = "1";
+epwm1.periphClock.$name                                        = "driverlib_perClock2";
+epwm1.periphConfig.$name                                       = "driverlib_perConfig1";
+epwm1.epwm.$assign                                             = "EPWM1";
+epwm1.epwm.epwm_aPin.$assign                                   = "boosterpack1.40";
+epwm1.epwm.epwm_bPin.$assign                                   = "boosterpack1.39";
+
+gpio3.$name           = "GPIO_Sensor0";
+gpio3.gpioPin.$assign = "boosterpack1.38";
+scripting.suppress("Connected to hardware,@@@.+?@@@ is connected to EPWM2 BP on the LaunchPad F29H85X\\. Consider selecting it in \'use hardware\' above\\. @@@.+?@@@", gpio3, "gpioPin");
+
+gpio4.$name                         = "GPIO_Sensor1";
+gpio4.gpioPin.$assignAllowConflicts = "boosterpack1.37";
+scripting.suppress("Connected to hardware,@@@.+?@@@ is connected to EPWM2 BP on the LaunchPad F29H85X\\. Consider selecting it in \'use hardware\' above\\. @@@.+?@@@", gpio4, "gpioPin");
+
+gpio5.$name           = "GPIO_Sensor2";
+gpio5.gpioPin.$assign = "boosterpack1.36";
+scripting.suppress("Connected to hardware,@@@.+?@@@ is connected to EPWM3 BP on the LaunchPad F29H85X\\. Consider selecting it in \'use hardware\' above\\. @@@.+?@@@", gpio5, "gpioPin");
+
+gpio6.$name           = "GPIO_Sensor3";
+gpio6.gpioPin.$assign = "boosterpack1.35";
+scripting.suppress("Connected to hardware,@@@.+?@@@ is connected to EPWM3 BP on the LaunchPad F29H85X\\. Consider selecting it in \'use hardware\' above\\. @@@.+?@@@", gpio6, "gpioPin");
+
+jtag.JTAG.$assign        = "JTAG";
+jtag.JTAG.tdoPin.$assign = "GPIO223/TDO";
+jtag.JTAG.tdiPin.$assign = "GPIO222/TDI";
+scripting.suppress("Not pinned out,@@@.+?@@@ is not pinned out on the LaunchPad F29H85X\\.  @@@.+?@@@", jtag.JTAG, "tdoPin");
+scripting.suppress("Not pinned out,@@@.+?@@@ is not pinned out on the LaunchPad F29H85X\\.  @@@.+?@@@", jtag.JTAG, "tdiPin");
+
+uart1.$name                   = "UI_UART";
+uart1.fen                     = true;
+uart1.$hardware               = system.deviceData.board.components.XDS_UART.subComponents.XDS_SCI_INST1;
+uart1.baudSelect              = "Custom";
+uart1.baud                    = 15000000;
+uart1.registerInterrupts      = true;
+uart1.enabledInterrupts       = ["UART_INT_RX"];
+uart1.rxiflsel                = "UART_FIFO_RX7_8";
+uart1.txQual.$name            = "myGPIOQUAL0";
+uart1.rxQual.$name            = "myGPIOQUAL1";
+uart1.periphClock.$name       = "driverlib_perClock1";
+uart1.periphConfig.$name      = "driverlib_perConfig0";
+uart1.uart.$assign            = "UARTA";
+uart1.uart.uart_txPin.$assign = "boosterpack1.4";
+uart1.uart.uart_rxPin.$assign = "boosterpack1.3";
+
+/**
+ * Pinmux solution for unlocked pins/peripherals. This ensures that minor changes to the automatic solver in a future
+ * version of the tool will not impact the pinmux you originally saw.  These lines can be completely deleted in order to
+ * re-solve from scratch.
+ */
+led1.gpio.gpioPin.$suggestSolution = "boosterpack1.13";
