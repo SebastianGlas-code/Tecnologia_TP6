@@ -1,2 +1,2 @@
-# PDSTR_TP1
-Procesamiento Digital de Señales en Tiempo Real - Trabajo Practico 1
+# Tecnologia_TP6
+Tecnologia Electronica - Trabajo Practico 6
